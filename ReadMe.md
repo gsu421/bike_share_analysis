@@ -1429,7 +1429,7 @@ $$\sigma_d: Std\ Dev\ of\ Demand$$
 
 ```python
 # Merge service level calculated in step 2 to the inv_target_hourly_df DataFrame
-inv_target_hourly_df = pd.merge(inv_target_hourly_df, service_level_df.loc[:,['terminal','station','time','service_level']],on=['terminal','station','time'], how='inner')
+inv_target_hourly_df = pd.merge(inv_target_hourly_df, service_level_df.loc[:,['terminal','station','time','delta_demand_supply', 'service_level']],on=['terminal','station','time'], how='inner')
 ```
 
 #### Calculate Safety Stock
@@ -1445,6 +1445,30 @@ std_s = inv_target_hourly_df.supply_std
 
 inv_target_hourly_df['safety_stock'] = calc_safety_stock(sl, avg_d, std_d, avg_s, std_s)
 ```
+
+
+    ---------------------------------------------------------------------------
+
+    AttributeError                            Traceback (most recent call last)
+
+    <ipython-input-45-3ccda2d2463f> in <module>()
+          1 # Assign attributes
+    ----> 2 sl = inv_target_hourly_df.service_level
+          3 std_d = inv_target_hourly_df.demand_std
+          4 avg_d = inv_target_hourly_df.demand_avg
+          5 avg_s = inv_target_hourly_df.supply_avg
+
+
+    ~/anaconda3/envs/PythonData/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
+       2670             if name in self._info_axis:
+       2671                 return self[name]
+    -> 2672             return object.__getattribute__(self, name)
+       2673 
+       2674     def __setattr__(self, name, value):
+
+
+    AttributeError: 'DataFrame' object has no attribute 'service_level'
+
 
 #### Calculate Inventory Target
 
@@ -1477,9 +1501,11 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <th>supply_avg</th>
       <th>demand_std</th>
       <th>supply_std</th>
-      <th>service_level</th>
+      <th>service_level_x</th>
       <th>safety_stock</th>
       <th>inventory_target</th>
+      <th>delta_demand_supply</th>
+      <th>service_level_y</th>
     </tr>
   </thead>
   <tbody>
@@ -1497,6 +1523,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>0.00</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>536</th>
@@ -1512,6 +1540,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>-0.03</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>537</th>
@@ -1527,6 +1557,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>0.00</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>538</th>
@@ -1542,6 +1574,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>0.00</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>539</th>
@@ -1557,6 +1591,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>-0.02</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>540</th>
@@ -1572,6 +1608,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>0.12</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>541</th>
@@ -1587,6 +1625,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
+      <td>1.24</td>
+      <td>0.80</td>
     </tr>
     <tr>
       <th>542</th>
@@ -1602,6 +1642,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
+      <td>5.39</td>
+      <td>0.80</td>
     </tr>
     <tr>
       <th>543</th>
@@ -1617,6 +1659,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.95</td>
       <td>21.69</td>
       <td>26.0</td>
+      <td>8.71</td>
+      <td>0.95</td>
     </tr>
     <tr>
       <th>544</th>
@@ -1632,6 +1676,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
+      <td>4.64</td>
+      <td>0.80</td>
     </tr>
     <tr>
       <th>545</th>
@@ -1647,6 +1693,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
+      <td>0.73</td>
+      <td>0.80</td>
     </tr>
     <tr>
       <th>546</th>
@@ -1662,6 +1710,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>0.49</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>547</th>
@@ -1677,6 +1727,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
+      <td>-0.21</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1268</th>
@@ -1692,6 +1744,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-0.46</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1269</th>
@@ -1707,6 +1761,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-0.79</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1270</th>
@@ -1722,6 +1778,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-2.41</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1271</th>
@@ -1737,6 +1795,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-13.56</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1272</th>
@@ -1752,6 +1812,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-13.97</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1273</th>
@@ -1767,6 +1829,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-8.21</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1274</th>
@@ -1782,6 +1846,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-0.08</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1275</th>
@@ -1797,6 +1863,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-1.24</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1276</th>
@@ -1812,6 +1880,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-0.79</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1277</th>
@@ -1827,6 +1897,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>0.01</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1278</th>
@@ -1842,6 +1914,8 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
+      <td>-0.10</td>
+      <td>0.50</td>
     </tr>
   </tbody>
 </table>
@@ -1895,7 +1969,9 @@ sd_gap_avg_df = inv_target_hourly_df.loc[:,['terminal','station','time','delta_d
 sd_gap_avg_df['delta_demand_supply'] = sd_gap_avg_df.delta_demand_supply.abs()
 grouped_sd_gap_avg_df = sd_gap_avg_df.groupby(['terminal','station'])
 sd_gap_avg_df = pd.DataFrame(grouped_sd_gap_avg_df.delta_demand_supply.mean()).reset_index('station')
-sd_gap_avg_df.loc[[50,60,70],:]
+sd_gap_avg_df.rename(columns={'delta_demand_supply': 'avg supply demand gap'}, inplace = True)
+sd_gap_avg_df.loc[[70,50,60],:]
+
 ```
 
 
@@ -1907,7 +1983,7 @@ sd_gap_avg_df.loc[[50,60,70],:]
     <tr style="text-align: right;">
       <th></th>
       <th>station</th>
-      <th>delta_demand_supply</th>
+      <th>avg supply demand gap</th>
     </tr>
     <tr>
       <th>terminal</th>
@@ -1917,19 +1993,19 @@ sd_gap_avg_df.loc[[50,60,70],:]
   </thead>
   <tbody>
     <tr>
+      <th>70</th>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>2.633333</td>
+    </tr>
+    <tr>
       <th>50</th>
       <td>Harry Bridges Plaza (Ferry Building)</td>
-      <td>NaN</td>
+      <td>1.053913</td>
     </tr>
     <tr>
       <th>60</th>
       <td>Embarcadero at Sansome</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>70</th>
-      <td>San Francisco Caltrain (Townsend at 4th)</td>
-      <td>NaN</td>
+      <td>0.566522</td>
     </tr>
   </tbody>
 </table>
