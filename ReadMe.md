@@ -1987,9 +1987,9 @@ sd_gap_avg_df.loc[[70,50,60],:]
     - Incentives
         - Extra minutes on the bike
         - Discount on Uber Pool
-- How the tool can help with real time monitoring
+- How to use the tool for real time monitoring
     - The dashboard along with this Python script will allow the business stakeholders to see the latest Supply and Demand relationship.
     - The inventory target is also updated in realtime when new data comes in.
     - Prediction Model with Inventory Target
         - If we can forecast the future demand, then we can also calculate the future inventory target.
-        - If we can predetermine the 
+        - If we can predetermine the future inventory target, then we can launch the campaign to rebalance the supply and demand ahead of time. 
