@@ -1975,7 +1975,7 @@ sd_gap_avg_df.loc[[70,50,60],:]
     - I made an assumption that they are the same when I aggrepate the data by hours.
     - If I were given more time, I would investigate further on the differences and fine tune the inventory target level.
 
-# Conclusion
+# Recommendation
 
 - Business Recommendation
     - If we are able to reject the null hypothesis, we can use the inventory target as a prediction model to bridge the supply and demand gap. 
