@@ -148,8 +148,37 @@ def plt_supply_demand(station):
     ax.plot(x_axis[top_stations_df.station == station], y_axis_demand[top_stations_df.station == station], marker="o", c="lightcoral", linewidth=7.0, alpha=0.75, label = "Demand")
     ax.plot(x_axis[top_stations_df.station == station], y_axis_supply[top_stations_df.station == station], marker="o", c="lightblue", linewidth=7.0, alpha=0.75, label = "Supply")
     
+    ax.set_ylabel('Number of Bikes')
+    ax.set_xlabel('Time')
     plt.legend(loc="upper left", fancybox=True)
     
+    # Set Style
+    jtplot.style(theme='onedork')
+    plt.show()
+```
+
+
+```python
+ def plt_inv_target(station):
+    # Set up axis
+    x_axis = inv_target_hourly_df.time
+    y_axis = inv_target_hourly_df.loc[inv_target_hourly_df.station == station].inventory_target
+    y_axis_supply = inv_target_hourly_df.loc[inv_target_hourly_df.station == station].supply_count
+    y_axis_demand = inv_target_hourly_df.loc[inv_target_hourly_df.station == station].demand_count
+ 
+    #Plot
+    fig, ax = plt.subplots(1, 1, figsize=(30, 10))
+    fig.suptitle("Bike Share Hourly Inventory Target @ "+station, fontsize=24, fontweight="bold")
+    colors = {'Inv Target': 'lightblue', 'Supply':'lightblue', 'Demand':'lightcoral'}
+    
+    ax.bar(x_axis[inv_target_hourly_df.station == station], y_axis[inv_target_hourly_df.station == station], color="blue", width=7.0, alpha=0.75, label = 'Inventory Target')
+    ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_demand[inv_target_hourly_df.station == station], marker="o", c="lightcoral", linewidth=7.0, alpha=0.75, label = "Demand")
+    ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_supply[inv_target_hourly_df.station == station], marker="o", c="lightblue", linewidth=7.0, alpha=0.75, label = "Supply")
+    
+    ax.set_ylabel('Number of Bikes')
+    ax.set_xlabel('Time')
+    plt.legend(loc="upper left", fancybox=True)
+
     # Set Style
     jtplot.style(theme='onedork')
     plt.show()
@@ -707,15 +736,15 @@ for station in station_list:
 ```
 
 
-![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_26_0.png)
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_27_0.png)
 
 
 
-![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_26_1.png)
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_27_1.png)
 
 
 
-![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_26_2.png)
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_27_2.png)
 
 
 ## Problem Statement: Inbalanced Supply and Demand
@@ -1080,20 +1109,20 @@ service_level_df = service_level_df.fillna(0)
 ### Notes:
 The Pareto Analysis is used to determine the service level at each station throughout the day:
 - the **95%** service level is assigned to percentile **above  80%**
-- the **90%** service level is assigned to percentile ranging from **15% to 80%** 
-- the **85%** service level is assigned to percentile ranging from  **5% to 15%**
+- the **80%** service level is assigned to percentile ranging from **15% to 80%** 
+- the **75%** service level is assigned to percentile ranging from  **5% to 15%**
 - the **50%** service level is assigned to percentile **below 5%**
 
 
 ```python
 service_level_bins = [-1, .05, .15, .80, 1]
-service_level_label = [.50, .85, .90, .95]
+service_level_label = [.50, .75, .80, .95]
 service_level_df["service_level"] = pd.cut(service_level_df.percentile, service_level_bins, labels=service_level_label)
 ```
 
 
 ```python
-service_level_df.loc[service_level_df.terminal==60].sort_values(by=['terminal','station'],ascending=True,inplace=False).head(24)
+service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','station'],ascending=True,inplace=False).head(24)
 ```
 
 
@@ -1116,256 +1145,267 @@ service_level_df.loc[service_level_df.terminal==60].sort_values(by=['terminal','
   </thead>
   <tbody>
     <tr>
-      <th>926</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>17:00</td>
-      <td>5.60</td>
-      <td>4.83</td>
-      <td>0.77</td>
-      <td>1.000000</td>
-      <td>0.95</td>
-    </tr>
-    <tr>
-      <th>925</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>16:00</td>
-      <td>4.08</td>
-      <td>3.40</td>
-      <td>0.68</td>
-      <td>0.888889</td>
-      <td>0.95</td>
-    </tr>
-    <tr>
-      <th>927</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>18:00</td>
-      <td>4.10</td>
-      <td>3.49</td>
-      <td>0.61</td>
-      <td>0.777778</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>915</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>06:00</td>
-      <td>1.27</td>
-      <td>0.67</td>
-      <td>0.60</td>
-      <td>0.666667</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>916</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>07:00</td>
-      <td>1.57</td>
-      <td>1.07</td>
-      <td>0.50</td>
-      <td>0.555556</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>924</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>15:00</td>
-      <td>2.95</td>
-      <td>2.82</td>
-      <td>0.13</td>
-      <td>0.444444</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>932</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>23:00</td>
-      <td>0.35</td>
-      <td>0.22</td>
-      <td>0.13</td>
-      <td>0.333333</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>912</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>02:00</td>
-      <td>0.03</td>
-      <td>0.01</td>
-      <td>0.02</td>
-      <td>0.222222</td>
-      <td>0.90</td>
-    </tr>
-    <tr>
-      <th>913</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>04:00</td>
-      <td>0.02</td>
-      <td>0.01</td>
-      <td>0.01</td>
-      <td>0.111111</td>
-      <td>0.85</td>
-    </tr>
-    <tr>
-      <th>910</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>00:00</td>
-      <td>0.11</td>
-      <td>0.11</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>911</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>01:00</td>
-      <td>0.03</td>
-      <td>0.07</td>
-      <td>-0.04</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>931</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>22:00</td>
-      <td>0.43</td>
-      <td>0.48</td>
-      <td>-0.05</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>930</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>21:00</td>
-      <td>0.70</td>
-      <td>0.82</td>
-      <td>-0.12</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>923</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>14:00</td>
-      <td>2.71</td>
-      <td>2.85</td>
-      <td>-0.14</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>914</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>05:00</td>
-      <td>0.09</td>
-      <td>0.40</td>
-      <td>-0.31</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>929</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>20:00</td>
-      <td>1.06</td>
-      <td>1.42</td>
-      <td>-0.36</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>928</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>19:00</td>
-      <td>1.98</td>
-      <td>2.43</td>
-      <td>-0.45</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>921</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>12:00</td>
-      <td>2.59</td>
-      <td>3.34</td>
-      <td>-0.75</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>920</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>11:00</td>
-      <td>1.72</td>
-      <td>2.47</td>
-      <td>-0.75</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>922</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>13:00</td>
-      <td>2.24</td>
-      <td>3.03</td>
-      <td>-0.79</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>919</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>10:00</td>
-      <td>1.28</td>
-      <td>2.32</td>
-      <td>-1.04</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>918</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
-      <td>09:00</td>
-      <td>1.40</td>
-      <td>3.45</td>
-      <td>-2.05</td>
-      <td>0.000000</td>
-      <td>0.50</td>
-    </tr>
-    <tr>
-      <th>917</th>
-      <td>60</td>
-      <td>Embarcadero at Sansome</td>
+      <th>1145</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
       <td>08:00</td>
-      <td>1.80</td>
-      <td>4.53</td>
-      <td>-2.73</td>
-      <td>0.000000</td>
+      <td>17.79</td>
+      <td>9.08</td>
+      <td>8.71</td>
+      <td>1.000</td>
+      <td>0.95</td>
+    </tr>
+    <tr>
+      <th>1144</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>07:00</td>
+      <td>11.55</td>
+      <td>6.16</td>
+      <td>5.39</td>
+      <td>0.875</td>
+      <td>0.95</td>
+    </tr>
+    <tr>
+      <th>1146</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>09:00</td>
+      <td>9.25</td>
+      <td>4.61</td>
+      <td>4.64</td>
+      <td>0.750</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>1143</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>06:00</td>
+      <td>2.96</td>
+      <td>1.72</td>
+      <td>1.24</td>
+      <td>0.625</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>1147</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>10:00</td>
+      <td>2.61</td>
+      <td>1.88</td>
+      <td>0.73</td>
+      <td>0.500</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>1148</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>11:00</td>
+      <td>1.66</td>
+      <td>1.17</td>
+      <td>0.49</td>
+      <td>0.375</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>1142</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>05:00</td>
+      <td>0.22</td>
+      <td>0.10</td>
+      <td>0.12</td>
+      <td>0.250</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>1159</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>22:00</td>
+      <td>0.61</td>
+      <td>0.60</td>
+      <td>0.01</td>
+      <td>0.125</td>
+      <td>0.75</td>
+    </tr>
+    <tr>
+      <th>1137</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>00:00</td>
+      <td>0.14</td>
+      <td>0.14</td>
+      <td>0.00</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1139</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>02:00</td>
+      <td>0.04</td>
+      <td>0.04</td>
+      <td>0.00</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1140</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>03:00</td>
+      <td>0.01</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1141</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>04:00</td>
+      <td>0.01</td>
+      <td>0.03</td>
+      <td>-0.02</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1138</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>01:00</td>
+      <td>0.08</td>
+      <td>0.11</td>
+      <td>-0.03</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1156</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>19:00</td>
+      <td>3.72</td>
+      <td>3.80</td>
+      <td>-0.08</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1160</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>23:00</td>
+      <td>0.30</td>
+      <td>0.40</td>
+      <td>-0.10</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1149</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>12:00</td>
+      <td>1.28</td>
+      <td>1.49</td>
+      <td>-0.21</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1150</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>13:00</td>
+      <td>1.11</td>
+      <td>1.57</td>
+      <td>-0.46</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1151</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>14:00</td>
+      <td>0.98</td>
+      <td>1.77</td>
+      <td>-0.79</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1158</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>21:00</td>
+      <td>0.71</td>
+      <td>1.50</td>
+      <td>-0.79</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1157</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>20:00</td>
+      <td>1.24</td>
+      <td>2.48</td>
+      <td>-1.24</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1152</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>15:00</td>
+      <td>1.15</td>
+      <td>3.56</td>
+      <td>-2.41</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1155</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>18:00</td>
+      <td>5.59</td>
+      <td>13.80</td>
+      <td>-8.21</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1153</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>16:00</td>
+      <td>1.89</td>
+      <td>15.45</td>
+      <td>-13.56</td>
+      <td>0.000</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>1154</th>
+      <td>70</td>
+      <td>San Francisco Caltrain (Townsend at 4th)</td>
+      <td>17:00</td>
+      <td>5.48</td>
+      <td>19.45</td>
+      <td>-13.97</td>
+      <td>0.000</td>
       <td>0.50</td>
     </tr>
   </tbody>
@@ -1529,9 +1569,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.50</td>
-      <td>0.00</td>
-      <td>4.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>541</th>
@@ -1544,9 +1584,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.90</td>
-      <td>16.90</td>
-      <td>21.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>542</th>
@@ -1559,9 +1599,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.90</td>
-      <td>16.90</td>
-      <td>21.0</td>
+      <td>0.95</td>
+      <td>21.69</td>
+      <td>26.0</td>
     </tr>
     <tr>
       <th>543</th>
@@ -1589,9 +1629,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.90</td>
-      <td>16.90</td>
-      <td>21.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>545</th>
@@ -1604,9 +1644,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.50</td>
-      <td>0.00</td>
-      <td>4.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>546</th>
@@ -1619,9 +1659,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.50</td>
-      <td>0.00</td>
-      <td>4.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>547</th>
@@ -1784,9 +1824,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
-      <td>0.50</td>
-      <td>0.00</td>
-      <td>3.0</td>
+      <td>0.75</td>
+      <td>10.11</td>
+      <td>13.0</td>
     </tr>
     <tr>
       <th>1278</th>
@@ -1807,6 +1847,25 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
 </table>
 </div>
 
+
+
+
+```python
+station_list = top_stations_df.station.unique()
+for station in station_list:
+    plt_inv_target(station)
+```
+
+
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_59_0.png)
+
+
+
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_59_1.png)
+
+
+
+![png](Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_files/Uber%20Freight%20BikeShare_Exercise_GeorgeSu_Final_59_2.png)
 
 
 #### Wrte the file to CSV
@@ -1860,17 +1919,17 @@ sd_gap_avg_df.loc[[50,60,70],:]
     <tr>
       <th>50</th>
       <td>Harry Bridges Plaza (Ferry Building)</td>
-      <td>1.053913</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>60</th>
       <td>Embarcadero at Sansome</td>
-      <td>0.566522</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>70</th>
       <td>San Francisco Caltrain (Townsend at 4th)</td>
-      <td>2.633333</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
