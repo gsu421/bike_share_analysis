@@ -169,9 +169,9 @@ def plt_supply_demand(station):
     #Plot
     fig, ax = plt.subplots(1, 1, figsize=(30, 10))
     fig.suptitle("Bike Share Hourly Inventory Target @ "+station, fontsize=24, fontweight="bold")
-    colors = {'Inv Target': 'lightblue', 'Supply':'lightblue', 'Demand':'lightcoral'}
+    colors = {'Inv Target': 'darkblue', 'Supply':'lightblue', 'Demand':'lightcoral'}
     
-    ax.bar(x_axis[inv_target_hourly_df.station == station], y_axis[inv_target_hourly_df.station == station], color="blue", width=1.0, alpha=0.75, label = 'Inventory Target')
+    ax.bar(x_axis[inv_target_hourly_df.station == station], y_axis[inv_target_hourly_df.station == station], color="darkblue", width=1.0, alpha=0.75, label = 'Inventory Target')
     ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_demand[inv_target_hourly_df.station == station], marker="o", c="lightcoral", linewidth=7.0, alpha=0.75, label = "Demand")
     ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_supply[inv_target_hourly_df.station == station], marker="o", c="lightblue", linewidth=7.0, alpha=0.75, label = "Supply")
     
