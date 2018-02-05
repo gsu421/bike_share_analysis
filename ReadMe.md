@@ -171,7 +171,7 @@ def plt_supply_demand(station):
     fig.suptitle("Bike Share Hourly Inventory Target @ "+station, fontsize=24, fontweight="bold")
     colors = {'Inv Target': 'lightblue', 'Supply':'lightblue', 'Demand':'lightcoral'}
     
-    ax.bar(x_axis[inv_target_hourly_df.station == station], y_axis[inv_target_hourly_df.station == station], color="blue", width=7.0, alpha=0.75, label = 'Inventory Target')
+    ax.bar(x_axis[inv_target_hourly_df.station == station], y_axis[inv_target_hourly_df.station == station], color="blue", width=1.0, alpha=0.75, label = 'Inventory Target')
     ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_demand[inv_target_hourly_df.station == station], marker="o", c="lightcoral", linewidth=7.0, alpha=0.75, label = "Demand")
     ax.plot(x_axis[inv_target_hourly_df.station == station], y_axis_supply[inv_target_hourly_df.station == station], marker="o", c="lightblue", linewidth=7.0, alpha=0.75, label = "Supply")
     
@@ -1102,7 +1102,7 @@ service_level_df = service_level_df.sort_values(by=['terminal','station','delta_
 
 
 ```python
-service_level_df['percentile'] = service_level_df.loc[service_level_df['delta_demand_supply']>0].groupby(['terminal','station'])['delta_demand_supply'].rank(pct=True)
+service_level_df['percentile'] = service_level_df.loc[service_level_df['delta_demand_supply']>0.5].groupby(['terminal','station'])['delta_demand_supply'].rank(pct=True)
 service_level_df = service_level_df.fillna(0)
 ```
 
@@ -1152,7 +1152,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>17.79</td>
       <td>9.08</td>
       <td>8.71</td>
-      <td>1.000</td>
+      <td>1.0</td>
       <td>0.95</td>
     </tr>
     <tr>
@@ -1163,8 +1163,8 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>11.55</td>
       <td>6.16</td>
       <td>5.39</td>
-      <td>0.875</td>
-      <td>0.95</td>
+      <td>0.8</td>
+      <td>0.80</td>
     </tr>
     <tr>
       <th>1146</th>
@@ -1174,7 +1174,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>9.25</td>
       <td>4.61</td>
       <td>4.64</td>
-      <td>0.750</td>
+      <td>0.6</td>
       <td>0.80</td>
     </tr>
     <tr>
@@ -1185,7 +1185,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>2.96</td>
       <td>1.72</td>
       <td>1.24</td>
-      <td>0.625</td>
+      <td>0.4</td>
       <td>0.80</td>
     </tr>
     <tr>
@@ -1196,7 +1196,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>2.61</td>
       <td>1.88</td>
       <td>0.73</td>
-      <td>0.500</td>
+      <td>0.2</td>
       <td>0.80</td>
     </tr>
     <tr>
@@ -1207,8 +1207,8 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.66</td>
       <td>1.17</td>
       <td>0.49</td>
-      <td>0.375</td>
-      <td>0.80</td>
+      <td>0.0</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1142</th>
@@ -1218,8 +1218,8 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.22</td>
       <td>0.10</td>
       <td>0.12</td>
-      <td>0.250</td>
-      <td>0.80</td>
+      <td>0.0</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1159</th>
@@ -1229,8 +1229,8 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.61</td>
       <td>0.60</td>
       <td>0.01</td>
-      <td>0.125</td>
-      <td>0.75</td>
+      <td>0.0</td>
+      <td>0.50</td>
     </tr>
     <tr>
       <th>1137</th>
@@ -1240,7 +1240,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.14</td>
       <td>0.14</td>
       <td>0.00</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1251,7 +1251,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.04</td>
       <td>0.04</td>
       <td>0.00</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1262,7 +1262,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.01</td>
       <td>0.01</td>
       <td>0.00</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1273,7 +1273,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.01</td>
       <td>0.03</td>
       <td>-0.02</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1284,7 +1284,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.08</td>
       <td>0.11</td>
       <td>-0.03</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1295,7 +1295,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>3.72</td>
       <td>3.80</td>
       <td>-0.08</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1306,7 +1306,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.30</td>
       <td>0.40</td>
       <td>-0.10</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1317,7 +1317,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.28</td>
       <td>1.49</td>
       <td>-0.21</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1328,7 +1328,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.11</td>
       <td>1.57</td>
       <td>-0.46</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1339,7 +1339,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.98</td>
       <td>1.77</td>
       <td>-0.79</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1350,7 +1350,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>0.71</td>
       <td>1.50</td>
       <td>-0.79</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1361,7 +1361,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.24</td>
       <td>2.48</td>
       <td>-1.24</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1372,7 +1372,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.15</td>
       <td>3.56</td>
       <td>-2.41</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1383,7 +1383,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>5.59</td>
       <td>13.80</td>
       <td>-8.21</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1394,7 +1394,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>1.89</td>
       <td>15.45</td>
       <td>-13.56</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
     <tr>
@@ -1405,7 +1405,7 @@ service_level_df.loc[service_level_df.terminal==70].sort_values(by=['terminal','
       <td>5.48</td>
       <td>19.45</td>
       <td>-13.97</td>
-      <td>0.000</td>
+      <td>0.0</td>
       <td>0.50</td>
     </tr>
   </tbody>
@@ -1569,9 +1569,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.80</td>
-      <td>11.10</td>
-      <td>15.0</td>
+      <td>0.50</td>
+      <td>0.00</td>
+      <td>4.0</td>
     </tr>
     <tr>
       <th>541</th>
@@ -1599,9 +1599,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.95</td>
-      <td>21.69</td>
-      <td>26.0</td>
+      <td>0.80</td>
+      <td>11.10</td>
+      <td>15.0</td>
     </tr>
     <tr>
       <th>543</th>
@@ -1659,9 +1659,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
-      <td>0.80</td>
-      <td>11.10</td>
-      <td>15.0</td>
+      <td>0.50</td>
+      <td>0.00</td>
+      <td>4.0</td>
     </tr>
     <tr>
       <th>547</th>
@@ -1824,9 +1824,9 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
-      <td>0.75</td>
-      <td>10.11</td>
-      <td>13.0</td>
+      <td>0.50</td>
+      <td>0.00</td>
+      <td>3.0</td>
     </tr>
     <tr>
       <th>1278</th>
