@@ -1446,30 +1446,6 @@ std_s = inv_target_hourly_df.supply_std
 inv_target_hourly_df['safety_stock'] = calc_safety_stock(sl, avg_d, std_d, avg_s, std_s)
 ```
 
-
-    ---------------------------------------------------------------------------
-
-    AttributeError                            Traceback (most recent call last)
-
-    <ipython-input-45-3ccda2d2463f> in <module>()
-          1 # Assign attributes
-    ----> 2 sl = inv_target_hourly_df.service_level
-          3 std_d = inv_target_hourly_df.demand_std
-          4 avg_d = inv_target_hourly_df.demand_avg
-          5 avg_s = inv_target_hourly_df.supply_avg
-
-
-    ~/anaconda3/envs/PythonData/lib/python3.6/site-packages/pandas/core/generic.py in __getattr__(self, name)
-       2670             if name in self._info_axis:
-       2671                 return self[name]
-    -> 2672             return object.__getattribute__(self, name)
-       2673 
-       2674     def __setattr__(self, name, value):
-
-
-    AttributeError: 'DataFrame' object has no attribute 'service_level'
-
-
 #### Calculate Inventory Target
 
 
@@ -1501,11 +1477,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <th>supply_avg</th>
       <th>demand_std</th>
       <th>supply_std</th>
-      <th>service_level_x</th>
+      <th>delta_demand_supply</th>
+      <th>service_level</th>
       <th>safety_stock</th>
       <th>inventory_target</th>
-      <th>delta_demand_supply</th>
-      <th>service_level_y</th>
     </tr>
   </thead>
   <tbody>
@@ -1520,11 +1495,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.00</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>0.00</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>536</th>
@@ -1537,11 +1511,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>-0.03</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>-0.03</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>537</th>
@@ -1554,11 +1527,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.00</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>0.00</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>538</th>
@@ -1571,11 +1543,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.00</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>0.00</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>539</th>
@@ -1588,11 +1559,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>-0.02</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>-0.02</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>540</th>
@@ -1605,11 +1575,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.12</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>0.12</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>541</th>
@@ -1622,11 +1591,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>1.24</td>
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
-      <td>1.24</td>
-      <td>0.80</td>
     </tr>
     <tr>
       <th>542</th>
@@ -1639,11 +1607,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>5.39</td>
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
-      <td>5.39</td>
-      <td>0.80</td>
     </tr>
     <tr>
       <th>543</th>
@@ -1656,11 +1623,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>8.71</td>
       <td>0.95</td>
       <td>21.69</td>
       <td>26.0</td>
-      <td>8.71</td>
-      <td>0.95</td>
     </tr>
     <tr>
       <th>544</th>
@@ -1673,11 +1639,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>4.64</td>
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
-      <td>4.64</td>
-      <td>0.80</td>
     </tr>
     <tr>
       <th>545</th>
@@ -1690,11 +1655,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.73</td>
       <td>0.80</td>
       <td>11.10</td>
       <td>15.0</td>
-      <td>0.73</td>
-      <td>0.80</td>
     </tr>
     <tr>
       <th>546</th>
@@ -1707,11 +1671,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>0.49</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>0.49</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>547</th>
@@ -1724,11 +1687,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>2.04</td>
       <td>5.64</td>
       <td>2.85</td>
+      <td>-0.21</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>4.0</td>
-      <td>-0.21</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1268</th>
@@ -1741,11 +1703,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-0.46</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-0.46</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1269</th>
@@ -1758,11 +1719,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-0.79</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-0.79</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1270</th>
@@ -1775,11 +1735,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-2.41</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-2.41</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1271</th>
@@ -1792,11 +1751,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-13.56</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-13.56</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1272</th>
@@ -1809,11 +1767,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-13.97</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-13.97</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1273</th>
@@ -1826,11 +1783,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-8.21</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-8.21</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1274</th>
@@ -1843,11 +1799,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-0.08</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-0.08</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1275</th>
@@ -1860,11 +1815,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-1.24</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-1.24</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1276</th>
@@ -1877,11 +1831,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-0.79</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-0.79</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1277</th>
@@ -1894,11 +1847,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>0.01</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>0.01</td>
-      <td>0.50</td>
     </tr>
     <tr>
       <th>1278</th>
@@ -1911,11 +1863,10 @@ inv_target_hourly_df.loc[inv_target_hourly_df.terminal == 70]
       <td>5.85</td>
       <td>1.94</td>
       <td>6.87</td>
+      <td>-0.10</td>
       <td>0.50</td>
       <td>0.00</td>
       <td>3.0</td>
-      <td>-0.10</td>
-      <td>0.50</td>
     </tr>
   </tbody>
 </table>
@@ -2023,3 +1974,22 @@ sd_gap_avg_df.loc[[70,50,60],:]
     - There could be different weekday and weekend bike retal behavior. 
     - I made an assumption that they are the same when I aggrepate the data by hours.
     - If I were given more time, I would investigate further on the differences and fine tune the inventory target level.
+
+# Conclusion
+
+- Business Recommendation
+    - If we are able to reject the null hypothesis, we can use the inventory target as a prediction model to bridge the supply and demand gap. 
+    - The next question then becomes how do we incentivize the bike rider to either rent the bike from nearby station or return the bike at another location.
+        - Situation I: Running low on bikes at a station
+            - In the case that the inventory is low, we want to encourage bike riders to return their bikes to this location. Or we want the bike renters to rent at another nearby location if they are willing to accept the incentives.
+        - Situation II: Too many bikes at a station
+            - In the case the the inventory is surplus, we want to encourage bike renters to rent their bikes at this location. Or we want the bike riders to return at another nearby location if they are willing to accept the incentives.
+    - Incentives
+        - Extra minutes on the bike
+        - Discount on Uber Pool
+- How the tool can help with real time monitoring
+    - The dashboard along with this Python script will allow the business stakeholders to see the latest Supply and Demand relationship.
+    - The inventory target is also updated in realtime when new data comes in.
+    - Prediction Model with Inventory Target
+        - If we can forecast the future demand, then we can also calculate the future inventory target.
+        - If we can predetermine the 
